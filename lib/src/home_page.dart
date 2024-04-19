@@ -8,21 +8,20 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: const Text('Inicio'),
       ),
       drawer: const MenuPage(),
       body: Stack(
         children: [
           Center(
             child: Container(
-              constraints: const BoxConstraints(
-                  maxWidth: 400), // Ancho máximo del contenedor
+              constraints: const BoxConstraints(maxWidth: 400),
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    'Hola Mundo',
+                    'Inicio',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.black,
@@ -33,7 +32,7 @@ class HomePage extends StatelessWidget {
                   const SizedBox(height: 30),
                   ElevatedButton(
                     onPressed: () {
-                      // Action to be performed when button is pressed
+                      Navigator.pushNamed(context, '/to_do');
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(

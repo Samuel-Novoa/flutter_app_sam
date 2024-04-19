@@ -22,15 +22,15 @@ class MenuPage extends StatelessWidget {
             },
           ),
           ListTile(
-            title: const Text('About'),
+            title: const Text('To Do'),
             onTap: () {
-              Navigator.pushNamed(context, '/about');
+              Navigator.pushNamed(context, '/to_do');
             },
           ),
           ListTile(
-            title: const Text('Contact'),
+            title: const Text('Description'),
             onTap: () {
-              Navigator.pushNamed(context, '/contact');
+              Navigator.pushNamed(context, '/description');
             },
           ),
         ],

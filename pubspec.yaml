@@ -17,3 +17,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  # Agregar imagenes
+  # assets:
+  #   - assets/images/todo-logo.jpeg

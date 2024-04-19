@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../components/menu.dart';
 
 class ContactPage extends StatelessWidget {
   const ContactPage({super.key});
@@ -9,6 +10,7 @@ class ContactPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Contact'),
       ),
+      drawer: const MenuPage(),
       body: const Center(
         child: Text('This is the Contact page.'),
       ),

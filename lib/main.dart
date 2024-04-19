@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'src/home_page.dart';
-import 'src/description.dart';
 import 'src/to_do.dart';
 
 void main() {
@@ -18,7 +17,6 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const HomePage(),
-        '/description': (context) => const Description(),
         '/to_do': (context) => const ToDo(),
       },
     );

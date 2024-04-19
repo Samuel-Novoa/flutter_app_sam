@@ -5,7 +5,6 @@ class ToDo extends StatefulWidget {
   const ToDo({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _ToDoState createState() => _ToDoState();
 }
 
@@ -29,32 +28,53 @@ class _ToDoState extends State<ToDo> {
   }
 
   void _showTodoDetails(Map<String, dynamic> todo) {
+    _titleController.text = todo['title'];
+    _descriptionController.text = todo['description'];
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(todo['title']),
-        content: Text(todo['description']),
+        title: const Text('Edit To-Do'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: _titleController,
+              decoration: const InputDecoration(hintText: 'Enter title'),
+            ),
+            TextField(
+              controller: _descriptionController,
+              decoration: const InputDecoration(hintText: 'Enter description'),
+            ),
+          ],
+        ),
         actions: [
           TextButton(
             onPressed: () {
-              // Edit to-do item
+              _updateTodo(todo);
               Navigator.pop(context);
             },
-            child: const Text('Edit'),
+            child: const Text('Save'),
           ),
           TextButton(
             onPressed: () {
-              // Delete to-do item
-              setState(() {
-                _todoList.remove(todo);
-              });
               Navigator.pop(context);
             },
-            child: const Text('Delete'),
+            child: const Text('Cancel'),
           ),
         ],
       ),
     );
+  }
+
+  void _updateTodo(Map<String, dynamic> todo) {
+    final index = _todoList.indexOf(todo);
+    setState(() {
+      _todoList[index] = {
+        'title': _titleController.text,
+        'description': _descriptionController.text,
+      };
+    });
   }
 
   @override
@@ -97,6 +117,23 @@ class _ToDoState extends State<ToDo> {
                   child: ListTile(
                     title: Text(todo['title']),
                     onTap: () => _showTodoDetails(todo),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.edit),
+                          onPressed: () => _showTodoDetails(todo),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.delete),
+                          onPressed: () {
+                            setState(() {
+                              _todoList.remove(todo);
+                            });
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },

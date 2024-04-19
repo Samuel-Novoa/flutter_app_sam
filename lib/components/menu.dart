@@ -27,12 +27,6 @@ class MenuPage extends StatelessWidget {
               Navigator.pushNamed(context, '/to_do');
             },
           ),
-          ListTile(
-            title: const Text('Description'),
-            onTap: () {
-              Navigator.pushNamed(context, '/description');
-            },
-          ),
         ],
       ),
     );

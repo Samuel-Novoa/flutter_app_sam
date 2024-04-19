@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import '../components/menu.dart';
 
-class ToDo extends StatefulWidget {
-  const ToDo({super.key});
-
+class ToDoPage extends StatefulWidget {
   @override
-  // ignore: library_private_types_in_public_api
-  _ToDoState createState() => _ToDoState();
+  _ToDoPageState createState() => _ToDoPageState();
 }
 
-class _ToDoState extends State<ToDo> {
+class _ToDoPageState extends State<ToDoPage> {
   final List<Map<String, dynamic>> _todoList = [];
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
@@ -40,7 +36,7 @@ class _ToDoState extends State<ToDo> {
               // Edit to-do item
               Navigator.pop(context);
             },
-            child: const Text('Edit'),
+            child: Text('Edit'),
           ),
           TextButton(
             onPressed: () {
@@ -50,7 +46,7 @@ class _ToDoState extends State<ToDo> {
               });
               Navigator.pop(context);
             },
-            child: const Text('Delete'),
+            child: Text('Delete'),
           ),
         ],
       ),
@@ -61,32 +57,31 @@ class _ToDoState extends State<ToDo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('To Do'),
+        title: Text('To-Do List'),
       ),
-      drawer: const MenuPage(),
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(16.0),
             child: TextField(
               controller: _titleController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 hintText: 'Enter title',
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(16.0),
             child: TextField(
               controller: _descriptionController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 hintText: 'Enter description',
               ),
             ),
           ),
           ElevatedButton(
             onPressed: _addTodo,
-            child: const Text('Add To-Do'),
+            child: Text('Add To-Do'),
           ),
           Expanded(
             child: ListView.builder(

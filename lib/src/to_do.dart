@@ -12,7 +12,6 @@ class _ToDoState extends State<ToDo> {
   final List<Map<String, dynamic>> _todoList = [];
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  bool _isEditingTodo = false;
 
   void _addTodo() {
     if (_titleController.text.isNotEmpty &&
@@ -29,17 +28,105 @@ class _ToDoState extends State<ToDo> {
     }
   }
 
+  void _showAddTodoDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Add New To-Do'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: _titleController,
+              decoration: const InputDecoration(hintText: 'Enter title'),
+            ),
+            TextField(
+              controller: _descriptionController,
+              decoration: const InputDecoration(hintText: 'Enter description'),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              _addTodo();
+              Navigator.pop(context);
+            },
+            child: const Text('Add'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Cancel'),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _showTodoDetails(Map<String, dynamic> todo) {
-    setState(() {
-      _isEditingTodo = true;
-    });
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('To-Do Details'),
+            IconButton(
+              icon: const Icon(Icons.close),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Title: ${todo['title']}'),
+            Text('Description: ${todo['description']}'),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _showTodoEditDialog(todo);
+            },
+            child: const Text('Edit'),
+          ),
+          TextButton(
+            onPressed: () {
+              _deleteTodo(todo);
+              Navigator.pop(context);
+            },
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showTodoEditDialog(Map<String, dynamic> todo) {
     _titleController.text = todo['title'];
     _descriptionController.text = todo['description'];
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Edit To-Do'),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('Edit To-Do'),
+            IconButton(
+              icon: const Icon(Icons.close),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -57,21 +144,11 @@ class _ToDoState extends State<ToDo> {
           TextButton(
             onPressed: () {
               _updateTodo(todo);
+              _titleController.clear(); // Limpiar campos después de actualizar
+              _descriptionController.clear();
               Navigator.pop(context);
-              setState(() {
-                _isEditingTodo = false;
-              });
             },
             child: const Text('Save'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              setState(() {
-                _isEditingTodo = false;
-              });
-            },
-            child: const Text('Cancel'),
           ),
         ],
       ),
@@ -86,6 +163,12 @@ class _ToDoState extends State<ToDo> {
         'description': _descriptionController.text,
         'isCompleted': todo['isCompleted'],
       };
+    });
+  }
+
+  void _deleteTodo(Map<String, dynamic> todo) {
+    setState(() {
+      _todoList.remove(todo);
     });
   }
 
@@ -105,29 +188,9 @@ class _ToDoState extends State<ToDo> {
       drawer: const MenuPage(),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _titleController,
-              enabled: !_isEditingTodo,
-              decoration: const InputDecoration(
-                hintText: 'Enter title',
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _descriptionController,
-              enabled: !_isEditingTodo,
-              decoration: const InputDecoration(
-                hintText: 'Enter description',
-              ),
-            ),
-          ),
           ElevatedButton(
-            onPressed: _addTodo,
-            child: const Text('Add To-Do'),
+            onPressed: _showAddTodoDialog,
+            child: const Text('Add New To-Do'),
           ),
           Expanded(
             child: ListView.builder(
@@ -148,23 +211,19 @@ class _ToDoState extends State<ToDo> {
                             : TextDecoration.none,
                       ),
                     ),
-                    onTap: todo['isCompleted']
-                        ? null
-                        : () => _showTodoDetails(todo),
+                    onTap: () => _showTodoDetails(todo),
                     trailing: !todo['isCompleted']
                         ? Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               IconButton(
                                 icon: const Icon(Icons.edit),
-                                onPressed: () => _showTodoDetails(todo),
+                                onPressed: () => _showTodoEditDialog(todo),
                               ),
                               IconButton(
                                 icon: const Icon(Icons.delete),
                                 onPressed: () {
-                                  setState(() {
-                                    _todoList.remove(todo);
-                                  });
+                                  _deleteTodo(todo);
                                 },
                               ),
                             ],

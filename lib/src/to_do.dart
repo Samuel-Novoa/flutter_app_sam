@@ -17,9 +17,9 @@ class ToDoState extends State<ToDo> {
         _descriptionController.text.isNotEmpty) {
       setState(() {
         Store.todoList.add({
-          'title': _titleController.text,
-          'description': _descriptionController.text,
-          'isCompleted': false,
+          'titulo': _titleController.text,
+          'descripcion': _descriptionController.text,
+          'esCompleta': false,
         });
         _titleController.clear();
         _descriptionController.clear();
@@ -39,11 +39,12 @@ class ToDoState extends State<ToDo> {
           children: [
             TextField(
               controller: _titleController,
-              decoration: const InputDecoration(hintText: 'Enter title'),
+              decoration: const InputDecoration(hintText: 'Digitar titulo'),
             ),
             TextField(
               controller: _descriptionController,
-              decoration: const InputDecoration(hintText: 'Enter description'),
+              decoration:
+                  const InputDecoration(hintText: 'Digitar descripcion'),
             ),
           ],
         ),
@@ -53,7 +54,7 @@ class ToDoState extends State<ToDo> {
               _addTodo();
               Navigator.pop(context);
             },
-            child: const Text('Add'),
+            child: const Text('Agregar'),
           ),
           TextButton(
             onPressed: () {
@@ -73,19 +74,19 @@ class ToDoState extends State<ToDo> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('To-Do Details'),
+            const Text('Detalles de la tarea'),
             IconButton(
               icon: const Icon(Icons.close),
               onPressed:
-                  !todo['isCompleted'] ? () => _showTodoDetails(todo) : null,
+                  !todo['esCompleta'] ? () => _showTodoDetails(todo) : null,
             ),
           ],
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Titulo: ${todo['title']}'),
-            Text('Description: ${todo['description']}'),
+            Text('Titulo: ${todo['titulo']}'),
+            Text('Description: ${todo['descripcion']}'),
           ],
         ),
         actions: [
@@ -94,14 +95,14 @@ class ToDoState extends State<ToDo> {
               Navigator.pop(context);
               _showTodoEditDialog(todo);
             },
-            child: const Text('Edit'),
+            child: const Text('Editar'),
           ),
           TextButton(
             onPressed: () {
               _deleteTodo(todo);
               Navigator.pop(context);
             },
-            child: const Text('Delete'),
+            child: const Text('Eliminar'),
           ),
         ],
       ),
@@ -109,8 +110,8 @@ class ToDoState extends State<ToDo> {
   }
 
   void _showTodoEditDialog(Map<String, dynamic> todo) {
-    _titleController.text = todo['title'];
-    _descriptionController.text = todo['description'];
+    _titleController.text = todo['titulo'];
+    _descriptionController.text = todo['descripcion'];
 
     showDialog(
       context: context,
@@ -118,7 +119,7 @@ class ToDoState extends State<ToDo> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('Edit To-Do'),
+            const Text('Editar tarea'),
             IconButton(
               icon: const Icon(Icons.close),
               onPressed: () {
@@ -132,11 +133,12 @@ class ToDoState extends State<ToDo> {
           children: [
             TextField(
               controller: _titleController,
-              decoration: const InputDecoration(hintText: 'Enter title'),
+              decoration: const InputDecoration(hintText: 'Digitar titulo'),
             ),
             TextField(
               controller: _descriptionController,
-              decoration: const InputDecoration(hintText: 'Enter description'),
+              decoration:
+                  const InputDecoration(hintText: 'Digitar descripcion'),
             ),
           ],
         ),
@@ -148,7 +150,7 @@ class ToDoState extends State<ToDo> {
               _descriptionController.clear();
               Navigator.pop(context);
             },
-            child: const Text('Save'),
+            child: const Text('Guardar'),
           ),
         ],
       ),
@@ -161,7 +163,7 @@ class ToDoState extends State<ToDo> {
       Store.todoList[index] = {
         'title': _titleController.text,
         'description': _descriptionController.text,
-        'isCompleted': todo['isCompleted'],
+        'esCompleta': todo['esCompleta'],
       };
     });
   }
@@ -175,7 +177,7 @@ class ToDoState extends State<ToDo> {
   void _toggleComplete(Map<String, dynamic> todo) {
     final index = Store.todoList.indexOf(todo);
     setState(() {
-      Store.todoList[index]['isCompleted'] = !todo['isCompleted'];
+      Store.todoList[index]['esCompleta'] = !todo['esCompleta'];
     });
   }
 
@@ -213,20 +215,20 @@ class ToDoState extends State<ToDo> {
                           color: Colors.white,
                           child: ListTile(
                             leading: Checkbox(
-                              value: todo['isCompleted'],
+                              value: todo['esCompleta'],
                               onChanged: (value) => _toggleComplete(todo),
                             ),
                             title: Text(
-                              todo['title'],
+                              todo['titulo'],
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
-                                decoration: todo['isCompleted']
+                                decoration: todo['esCompleta']
                                     ? TextDecoration.lineThrough
                                     : TextDecoration.none,
                               ),
                             ),
                             onTap: () => _showTodoDetails(todo),
-                            trailing: !todo['isCompleted']
+                            trailing: !todo['esCompleta']
                                 ? Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [

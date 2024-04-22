@@ -77,8 +77,7 @@ class ToDoState extends State<ToDo> {
             const Text('Detalles de la tarea'),
             IconButton(
               icon: const Icon(Icons.close),
-              onPressed:
-                  !todo['esCompleta'] ? () => _showTodoDetails(todo) : null,
+              onPressed: () => Navigator.pop(context),
             ),
           ],
         ),
@@ -196,7 +195,7 @@ class ToDoState extends State<ToDo> {
         backgroundColor: const Color(0xFFAFC8AD),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(30.0), // Add padding around the Column
+        padding: const EdgeInsets.all(30.0),
         child: Column(
           children: [
             Expanded(

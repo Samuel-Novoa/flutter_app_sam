@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import '../components/menu.dart';
 
 class ToDo extends StatefulWidget {
   const ToDo({super.key});
 
   @override
-  _ToDoState createState() => _ToDoState();
+  ToDoState createState() => ToDoState();
 }
 
-class _ToDoState extends State<ToDo> {
+class ToDoState extends State<ToDo> {
   final List<Map<String, dynamic>> _todoList = [];
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
@@ -144,7 +143,7 @@ class _ToDoState extends State<ToDo> {
           TextButton(
             onPressed: () {
               _updateTodo(todo);
-              _titleController.clear(); // Limpiar campos después de actualizar
+              _titleController.clear(); // Clear fields after updating
               _descriptionController.clear();
               Navigator.pop(context);
             },
@@ -185,13 +184,8 @@ class _ToDoState extends State<ToDo> {
       appBar: AppBar(
         title: const Text('To Do'),
       ),
-      drawer: const MenuPage(),
       body: Column(
         children: [
-          ElevatedButton(
-            onPressed: _showAddTodoDialog,
-            child: const Text('Add New To-Do'),
-          ),
           Expanded(
             child: ListView.builder(
               itemCount: _todoList.length,
@@ -235,6 +229,10 @@ class _ToDoState extends State<ToDo> {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showAddTodoDialog,
+        child: const Icon(Icons.add),
       ),
     );
   }

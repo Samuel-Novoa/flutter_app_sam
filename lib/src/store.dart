@@ -8,10 +8,10 @@ class StorePage extends StatefulWidget {
   const StorePage({super.key});
 
   @override
-  _StorePageState createState() => _StorePageState();
+  StorePageState createState() => StorePageState();
 }
 
-class _StorePageState extends State<StorePage> {
+class StorePageState extends State<StorePage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
@@ -117,21 +117,23 @@ class _StorePageState extends State<StorePage> {
                       ),
                     ),
                     subtitle: Text(todo['description']),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: () => _showTodoEditDialog(todo),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {
-                            _deleteTodo(todo);
-                          },
-                        ),
-                      ],
-                    ),
+                    trailing: !todo['isCompleted']
+                        ? Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.edit),
+                                onPressed: () => _showTodoEditDialog(todo),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.delete),
+                                onPressed: () {
+                                  _deleteTodo(todo);
+                                },
+                              ),
+                            ],
+                          )
+                        : null,
                   ),
                 );
               },

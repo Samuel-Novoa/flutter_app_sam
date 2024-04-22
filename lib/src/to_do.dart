@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'store.dart';
 
 class ToDo extends StatefulWidget {
   const ToDo({super.key});
@@ -8,7 +9,6 @@ class ToDo extends StatefulWidget {
 }
 
 class ToDoState extends State<ToDo> {
-  final List<Map<String, dynamic>> _todoList = [];
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
@@ -16,7 +16,7 @@ class ToDoState extends State<ToDo> {
     if (_titleController.text.isNotEmpty &&
         _descriptionController.text.isNotEmpty) {
       setState(() {
-        _todoList.add({
+        Store.todoList.add({
           'title': _titleController.text,
           'description': _descriptionController.text,
           'isCompleted': false,
@@ -155,9 +155,9 @@ class ToDoState extends State<ToDo> {
   }
 
   void _updateTodo(Map<String, dynamic> todo) {
-    final index = _todoList.indexOf(todo);
+    final index = Store.todoList.indexOf(todo);
     setState(() {
-      _todoList[index] = {
+      Store.todoList[index] = {
         'title': _titleController.text,
         'description': _descriptionController.text,
         'isCompleted': todo['isCompleted'],
@@ -167,14 +167,14 @@ class ToDoState extends State<ToDo> {
 
   void _deleteTodo(Map<String, dynamic> todo) {
     setState(() {
-      _todoList.remove(todo);
+      Store.todoList.remove(todo);
     });
   }
 
   void _toggleComplete(Map<String, dynamic> todo) {
-    final index = _todoList.indexOf(todo);
+    final index = Store.todoList.indexOf(todo);
     setState(() {
-      _todoList[index]['isCompleted'] = !todo['isCompleted'];
+      Store.todoList[index]['isCompleted'] = !todo['isCompleted'];
     });
   }
 
@@ -188,9 +188,9 @@ class ToDoState extends State<ToDo> {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: _todoList.length,
+              itemCount: Store.todoList.length,
               itemBuilder: (context, index) {
-                final todo = _todoList[index];
+                final todo = Store.todoList[index];
                 return Card(
                   child: ListTile(
                     leading: Checkbox(

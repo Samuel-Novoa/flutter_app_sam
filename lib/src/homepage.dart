@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'to_do.dart';
-import 'store.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -8,32 +6,37 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Welcome'),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Welcome to the To-Do App'),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ToDo()),
-                );
-              },
-              child: const Text('Go to To-Do'),
+            // Rounded Image
+            ClipOval(
+              child: Image.asset(
+                'assets/logo-app.jpg',
+                width: 100,
+                height: 100,
+                fit: BoxFit.cover,
+              ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const StorePage()),
-                );
-              },
-              child: const Text('View To-Dos'),
+            const SizedBox(height: 16.0), // Spacing
+
+            // Centered Title
+            const Text(
+              'SnapNote',
+              style: TextStyle(
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+              ),
             ),
+            const SizedBox(height: 16.0), // Spacing
+
+            // Text under Title
+            const Text(
+              'Bienvenido a SnapNote',
+              style: TextStyle(fontSize: 16.0),
+            ),
+            const SizedBox(height: 32.0), // Spacing
           ],
         ),
       ),

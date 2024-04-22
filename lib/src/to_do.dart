@@ -31,7 +31,9 @@ class ToDoState extends State<ToDo> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Add New To-Do'),
+        title: const Text(
+          'Agregar una nueva tarea',
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -74,16 +76,15 @@ class ToDoState extends State<ToDo> {
             const Text('To-Do Details'),
             IconButton(
               icon: const Icon(Icons.close),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed:
+                  !todo['isCompleted'] ? () => _showTodoDetails(todo) : null,
             ),
           ],
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Title: ${todo['title']}'),
+            Text('Titulo: ${todo['title']}'),
             Text('Description: ${todo['description']}'),
           ],
         ),
@@ -182,57 +183,79 @@ class ToDoState extends State<ToDo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('To Do'),
+        title: Text(
+          'Agregar Tarea'.toUpperCase(),
+          style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.0,
+              color: Color.fromARGB(255, 40, 40, 40)),
+        ),
+        centerTitle: true,
+        backgroundColor: const Color(0xFF88AB8E),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: Store.todoList.length,
-              itemBuilder: (context, index) {
-                final todo = Store.todoList[index];
-                return Card(
-                  child: ListTile(
-                    leading: Checkbox(
-                      value: todo['isCompleted'],
-                      onChanged: (value) => _toggleComplete(todo),
-                    ),
-                    title: Text(
-                      todo['title'],
-                      style: TextStyle(
-                        decoration: todo['isCompleted']
-                            ? TextDecoration.lineThrough
-                            : TextDecoration.none,
+      body: Padding(
+        padding: const EdgeInsets.all(30.0), // Add padding around the Column
+        child: Column(
+          children: [
+            Expanded(
+              child: Store.todoList.isEmpty
+                  ? const Center(
+                      child: Text(
+                        'No hay tareas agregadas',
+                        style: TextStyle(fontSize: 18),
                       ),
+                    )
+                  : ListView.builder(
+                      itemCount: Store.todoList.length,
+                      itemBuilder: (context, index) {
+                        final todo = Store.todoList[index];
+                        return Card(
+                          child: ListTile(
+                            leading: Checkbox(
+                              value: todo['isCompleted'],
+                              onChanged: (value) => _toggleComplete(todo),
+                            ),
+                            title: Text(
+                              todo['title'],
+                              style: TextStyle(
+                                decoration: todo['isCompleted']
+                                    ? TextDecoration.lineThrough
+                                    : TextDecoration.none,
+                              ),
+                            ),
+                            onTap: () => _showTodoDetails(todo),
+                            trailing: !todo['isCompleted']
+                                ? Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      IconButton(
+                                        icon: const Icon(Icons.edit),
+                                        onPressed: () =>
+                                            _showTodoEditDialog(todo),
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(Icons.delete),
+                                        onPressed: () {
+                                          _deleteTodo(todo);
+                                        },
+                                      ),
+                                    ],
+                                  )
+                                : null,
+                          ),
+                        );
+                      },
                     ),
-                    onTap: () => _showTodoDetails(todo),
-                    trailing: !todo['isCompleted']
-                        ? Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.edit),
-                                onPressed: () => _showTodoEditDialog(todo),
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.delete),
-                                onPressed: () {
-                                  _deleteTodo(todo);
-                                },
-                              ),
-                            ],
-                          )
-                        : null,
-                  ),
-                );
-              },
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showAddTodoDialog,
-        child: const Icon(Icons.add),
+      floatingActionButton: Tooltip(
+        message: 'Agregar una nueva tarea',
+        child: FloatingActionButton(
+          onPressed: _showAddTodoDialog,
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }

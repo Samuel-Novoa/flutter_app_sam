@@ -1,5 +1,5 @@
-name: flutter_app_sam
-description: "A new Flutter project."
+name: snapnote
+description: "A note app"
 publish_to: 'none'
 version: 0.1.0
 
@@ -18,6 +18,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  # Agregar imagenes
-  # assets:
-  #   - assets/images/todo-logo.jpeg
+  assets:
+    - assets/logo-app.jpg

@@ -90,54 +90,67 @@ class StorePageState extends State<StorePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('To-Do List'),
+        title: Text(
+          'Tareas'.toUpperCase(),
+          style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.0,
+              color: Color.fromARGB(255, 40, 40, 40)),
+        ),
+        centerTitle: true,
+        backgroundColor: const Color(0xFFAFC8AD),
       ),
-      body: Store.todoList.isEmpty
-          ? const Center(
-              child: Text('No to-dos yet'),
-            )
-          : ListView.builder(
-              itemCount: Store.todoList.length,
-              itemBuilder: (context, index) {
-                final todo = Store.todoList[index];
-                return Card(
-                  child: ListTile(
-                    leading: Checkbox(
-                      value: todo['isCompleted'],
-                      onChanged: (value) {
-                        _toggleComplete(todo);
-                      },
-                    ),
-                    title: Text(
-                      todo['title'],
-                      style: TextStyle(
-                        decoration: todo['isCompleted']
-                            ? TextDecoration.lineThrough
-                            : TextDecoration.none,
+      body: Padding(
+        padding: const EdgeInsets.all(30.0), // Add padding around the body
+        child: Store.todoList.isEmpty
+            ? const Center(
+                child: Text(
+                  'No hay tareas guardadas',
+                  style: TextStyle(fontSize: 18),
+                ),
+              )
+            : ListView.builder(
+                itemCount: Store.todoList.length,
+                itemBuilder: (context, index) {
+                  final todo = Store.todoList[index];
+                  return Card(
+                    child: ListTile(
+                      leading: Checkbox(
+                        value: todo['isCompleted'],
+                        onChanged: (value) {
+                          _toggleComplete(todo);
+                        },
                       ),
+                      title: Text(
+                        todo['title'],
+                        style: TextStyle(
+                          decoration: todo['isCompleted']
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none,
+                        ),
+                      ),
+                      trailing: !todo['isCompleted']
+                          ? Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.edit),
+                                  onPressed: () => _showTodoEditDialog(todo),
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.delete),
+                                  onPressed: () {
+                                    _deleteTodo(todo);
+                                  },
+                                ),
+                              ],
+                            )
+                          : null,
                     ),
-                    subtitle: Text(todo['description']),
-                    trailing: !todo['isCompleted']
-                        ? Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.edit),
-                                onPressed: () => _showTodoEditDialog(todo),
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.delete),
-                                onPressed: () {
-                                  _deleteTodo(todo);
-                                },
-                              ),
-                            ],
-                          )
-                        : null,
-                  ),
-                );
-              },
-            ),
+                  );
+                },
+              ),
+      ),
     );
   }
 }

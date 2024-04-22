@@ -47,7 +47,7 @@ class MainPageState extends State<MainPage> {
       body: _pages[_selectedIndex],
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: const Color(0xFFf5f3ee),
-        color: Colors.blue,
+        color: const Color(0xFFAFC8AD),
         animationCurve: Curves.easeInOut,
         animationDuration: const Duration(milliseconds: 300),
         onTap: (index) {
@@ -56,9 +56,9 @@ class MainPageState extends State<MainPage> {
           });
         },
         items: const [
-          Icon(Icons.home, color: Colors.white),
-          Icon(Icons.edit, color: Colors.white),
-          Icon(Icons.remove_red_eye, color: Colors.white)
+          Icon(Icons.home, color: Colors.black),
+          Icon(Icons.edit, color: Colors.black),
+          Icon(Icons.remove_red_eye, color: Colors.black)
         ],
       ),
     );

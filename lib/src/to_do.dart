@@ -144,7 +144,7 @@ class ToDoState extends State<ToDo> {
           TextButton(
             onPressed: () {
               _updateTodo(todo);
-              _titleController.clear(); // Clear fields after updating
+              _titleController.clear();
               _descriptionController.clear();
               Navigator.pop(context);
             },
@@ -191,7 +191,7 @@ class ToDoState extends State<ToDo> {
               color: Color.fromARGB(255, 40, 40, 40)),
         ),
         centerTitle: true,
-        backgroundColor: const Color(0xFF88AB8E),
+        backgroundColor: const Color(0xFFAFC8AD),
       ),
       body: Padding(
         padding: const EdgeInsets.all(30.0), // Add padding around the Column
@@ -210,6 +210,7 @@ class ToDoState extends State<ToDo> {
                       itemBuilder: (context, index) {
                         final todo = Store.todoList[index];
                         return Card(
+                          color: Colors.white,
                           child: ListTile(
                             leading: Checkbox(
                               value: todo['isCompleted'],
@@ -218,6 +219,7 @@ class ToDoState extends State<ToDo> {
                             title: Text(
                               todo['title'],
                               style: TextStyle(
+                                fontWeight: FontWeight.w500,
                                 decoration: todo['isCompleted']
                                     ? TextDecoration.lineThrough
                                     : TextDecoration.none,
@@ -253,8 +255,10 @@ class ToDoState extends State<ToDo> {
       floatingActionButton: Tooltip(
         message: 'Agregar una nueva tarea',
         child: FloatingActionButton(
+          backgroundColor: const Color(0xFF88AB8E),
           onPressed: _showAddTodoDialog,
-          child: const Icon(Icons.add),
+          shape: const CircleBorder(),
+          child: const Icon(Icons.add, color: Colors.white),
         ),
       ),
     );

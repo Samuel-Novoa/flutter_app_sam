@@ -161,8 +161,8 @@ class ToDoState extends State<ToDo> {
     final index = Store.todoList.indexOf(todo);
     setState(() {
       Store.todoList[index] = {
-        'title': _titleController.text,
-        'description': _descriptionController.text,
+        'titulo': _titleController.text,
+        'descripcion': _descriptionController.text,
         'esCompleta': todo['esCompleta'],
       };
     });
@@ -227,7 +227,8 @@ class ToDoState extends State<ToDo> {
                                     : TextDecoration.none,
                               ),
                             ),
-                            onTap: () => _showTodoDetails(todo),
+                            // onTap: () => _showTodoDetails(todo),
+                            onTap: todo['esCompleta'] ? null : () => _showTodoDetails(todo),
                             trailing: !todo['esCompleta']
                                 ? Row(
                                     mainAxisSize: MainAxisSize.min,

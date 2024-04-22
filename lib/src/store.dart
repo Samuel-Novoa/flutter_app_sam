@@ -16,8 +16,8 @@ class StorePageState extends State<StorePage> {
   final TextEditingController _descriptionController = TextEditingController();
 
   void _showTodoEditDialog(Map<String, dynamic> todo) {
-    _titleController.text = todo['title'];
-    _descriptionController.text = todo['description'];
+    _titleController.text = todo['titulo'];
+    _descriptionController.text = todo['descripcion'];
 
     showDialog(
       context: context,
@@ -43,7 +43,7 @@ class StorePageState extends State<StorePage> {
             ),
             TextField(
               controller: _descriptionController,
-              decoration: const InputDecoration(hintText: 'Enter description'),
+              decoration: const InputDecoration(hintText: 'Enter descripcion'),
             ),
           ],
         ),
@@ -66,9 +66,9 @@ class StorePageState extends State<StorePage> {
     final index = Store.todoList.indexOf(todo);
     setState(() {
       Store.todoList[index] = {
-        'title': _titleController.text,
-        'description': _descriptionController.text,
-        'isCompleted': todo['isCompleted'],
+        'titulo': _titleController.text,
+        'descripcion': _descriptionController.text,
+        'esCompleta': todo['esCompleta'],
       };
     });
   }
@@ -82,7 +82,7 @@ class StorePageState extends State<StorePage> {
   void _toggleComplete(Map<String, dynamic> todo) {
     final index = Store.todoList.indexOf(todo);
     setState(() {
-      Store.todoList[index]['isCompleted'] = !todo['isCompleted'];
+      Store.todoList[index]['esCompleta'] = !todo['esCompleta'];
     });
   }
 
@@ -101,7 +101,7 @@ class StorePageState extends State<StorePage> {
         backgroundColor: const Color(0xFFAFC8AD),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(30.0), // Add padding around the body
+        padding: const EdgeInsets.all(30.0),
         child: Store.todoList.isEmpty
             ? const Center(
                 child: Text(
@@ -116,20 +116,21 @@ class StorePageState extends State<StorePage> {
                   return Card(
                     child: ListTile(
                       leading: Checkbox(
-                        value: todo['isCompleted'],
+                        value: todo['esCompleta'] ?? false, // Verificación de nulo
+                        tristate: false, // No se necesita un estado intermedio
                         onChanged: (value) {
                           _toggleComplete(todo);
                         },
                       ),
                       title: Text(
-                        todo['title'],
+                        todo['titulo'],
                         style: TextStyle(
-                          decoration: todo['isCompleted']
+                          decoration: todo['esCompleta'] == true // Verificación de true
                               ? TextDecoration.lineThrough
                               : TextDecoration.none,
                         ),
                       ),
-                      trailing: !todo['isCompleted']
+                      trailing: todo['esCompleta'] != true // Verificación de true
                           ? Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [

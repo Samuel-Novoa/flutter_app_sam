@@ -60,7 +60,7 @@ class ToDoState extends State<ToDo> {
             onPressed: () {
               Navigator.pop(context);
             },
-            child: const Text('Cancel'),
+            child: const Text('Cancelar'),
           ),
         ],
       ),
@@ -132,12 +132,12 @@ class ToDoState extends State<ToDo> {
           children: [
             TextField(
               controller: _titleController,
-              decoration: const InputDecoration(hintText: 'Digitar titulo'),
+              decoration: const InputDecoration(hintText: 'Ingresar el título'),
             ),
             TextField(
               controller: _descriptionController,
               decoration:
-                  const InputDecoration(hintText: 'Digitar descripcion'),
+                  const InputDecoration(hintText: 'Ingresar la descripción'),
             ),
           ],
         ),

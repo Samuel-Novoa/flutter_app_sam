@@ -25,7 +25,7 @@ class StorePageState extends State<StorePage> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('Edit To-Do'),
+            const Text('Editar la tarea'),
             IconButton(
               icon: const Icon(Icons.close),
               onPressed: () {
@@ -39,11 +39,11 @@ class StorePageState extends State<StorePage> {
           children: [
             TextField(
               controller: _titleController,
-              decoration: const InputDecoration(hintText: 'Enter title'),
+              decoration: const InputDecoration(hintText: 'Ingresar el título'),
             ),
             TextField(
               controller: _descriptionController,
-              decoration: const InputDecoration(hintText: 'Enter descripcion'),
+              decoration: const InputDecoration(hintText: 'Ingresar la descripción'),
             ),
           ],
         ),
@@ -55,7 +55,7 @@ class StorePageState extends State<StorePage> {
               _descriptionController.clear();
               Navigator.pop(context);
             },
-            child: const Text('Save'),
+            child: const Text('Guardar'),
           ),
         ],
       ),

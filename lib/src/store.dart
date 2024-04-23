@@ -22,10 +22,20 @@ class StorePageState extends State<StorePage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFFF2F1EB),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('Editar la tarea'),
+            Text(
+              'Editar la tarea'.toUpperCase(),
+              style: const TextStyle(
+                  letterSpacing: 0.5,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20),
+            ),
             IconButton(
               icon: const Icon(Icons.close),
               onPressed: () {
@@ -37,14 +47,11 @@ class StorePageState extends State<StorePage> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(hintText: 'Ingresar el título'),
-            ),
-            TextField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(hintText: 'Ingresar la descripción'),
-            ),
+            const SizedBox(height: 10),
+            _buildTextField(_titleController, 'Digitar título'),
+            const SizedBox(height: 10),
+            _buildTextField(_descriptionController, 'Digitar descripción',
+                multiline: true),
           ],
         ),
         actions: [
@@ -58,6 +65,36 @@ class StorePageState extends State<StorePage> {
             child: const Text('Guardar'),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildTextField(TextEditingController controller, String hintText,
+      {bool multiline = false}) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 0.1,
+            blurRadius: 2,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: TextField(
+        controller: controller,
+        minLines: multiline ? 3 : null,
+        maxLines: multiline ? 6 : null,
+        keyboardType: multiline ? TextInputType.multiline : TextInputType.text,
+        decoration: InputDecoration(
+          hintText: hintText,
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
+          border: InputBorder.none,
+        ),
       ),
     );
   }
@@ -84,6 +121,55 @@ class StorePageState extends State<StorePage> {
     setState(() {
       Store.todoList[index]['esCompleta'] = !todo['esCompleta'];
     });
+  }
+
+  void _showTodoDetailsDialog(Map<String, dynamic> todo) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFFF2F1EB),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Detalles de la tarea'.toUpperCase(),
+              style: const TextStyle(
+                  letterSpacing: 0.5,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20),
+            ),
+            IconButton(
+              icon: const Icon(Icons.close),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'Título',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Text('${todo['titulo']}'),
+            const SizedBox(height: 10),
+            const Text(
+              'Descripción',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Text('${todo['descripcion']}'),
+            const SizedBox(height: 10),
+            // Text('Completa: ${todo['esCompleta'] ? 'Sí' : 'No'}'),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -114,9 +200,12 @@ class StorePageState extends State<StorePage> {
                 itemBuilder: (context, index) {
                   final todo = Store.todoList[index];
                   return Card(
+                    color: Colors.white,
                     child: ListTile(
+                      onTap: () => _showTodoDetailsDialog(todo),
                       leading: Checkbox(
-                        value: todo['esCompleta'] ?? false, // Verificación de nulo
+                        value:
+                            todo['esCompleta'] ?? false, // Verificación de nulo
                         tristate: false, // No se necesita un estado intermedio
                         onChanged: (value) {
                           _toggleComplete(todo);
@@ -125,24 +214,27 @@ class StorePageState extends State<StorePage> {
                       title: Text(
                         todo['titulo'],
                         style: TextStyle(
-                          decoration: todo['esCompleta'] == true // Verificación de true
-                              ? TextDecoration.lineThrough
-                              : TextDecoration.none,
+                          fontWeight: FontWeight.w500,
+                          decoration:
+                              todo['esCompleta'] == true // Verificación de true
+                                  ? TextDecoration.lineThrough
+                                  : TextDecoration.none,
                         ),
                       ),
-                      trailing: todo['esCompleta'] != true // Verificación de true
+                      trailing: todo['esCompleta'] !=
+                              true // Verificación de true
                           ? Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 IconButton(
                                   icon: const Icon(Icons.edit),
                                   onPressed: () => _showTodoEditDialog(todo),
+                                  tooltip: 'Editar',
                                 ),
                                 IconButton(
                                   icon: const Icon(Icons.delete),
-                                  onPressed: () {
-                                    _deleteTodo(todo);
-                                  },
+                                  onPressed: () => _deleteTodo(todo),
+                                  tooltip: 'Eliminar',
                                 ),
                               ],
                             )

@@ -31,21 +31,23 @@ class ToDoState extends State<ToDo> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text(
-          'Agregar una nueva tarea',
+        title: Text(
+          'Agregar una nueva tarea'.toUpperCase(),
+          style: const TextStyle(
+              letterSpacing: 0.5, fontWeight: FontWeight.bold, fontSize: 20),
+        ),
+        backgroundColor: const Color(0xFFF2F1EB),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(hintText: 'Digitar titulo'),
-            ),
-            TextField(
-              controller: _descriptionController,
-              decoration:
-                  const InputDecoration(hintText: 'Digitar descripcion'),
-            ),
+            const SizedBox(height: 10),
+            _buildTextField(_titleController, 'Digitar título'),
+            const SizedBox(height: 10),
+            _buildTextField(_descriptionController, 'Digitar descripción',
+                multiline: true),
           ],
         ),
         actions: [
@@ -54,13 +56,25 @@ class ToDoState extends State<ToDo> {
               _addTodo();
               Navigator.pop(context);
             },
-            child: const Text('Agregar'),
+            child: const Text(
+              'Agregar',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
           TextButton(
             onPressed: () {
               Navigator.pop(context);
             },
-            child: const Text('Cancelar'),
+            child: const Text(
+              'Cancelar',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),
@@ -71,10 +85,20 @@ class ToDoState extends State<ToDo> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFFF2F1EB),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('Detalles de la tarea'),
+            Text(
+              'Detalles de la tarea'.toUpperCase(),
+              style: const TextStyle(
+                  letterSpacing: 0.5,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20),
+            ),
             IconButton(
               icon: const Icon(Icons.close),
               onPressed: () => Navigator.pop(context),
@@ -83,9 +107,18 @@ class ToDoState extends State<ToDo> {
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Titulo: ${todo['titulo']}'),
-            Text('Description: ${todo['descripcion']}'),
+            const Text(
+              'Titulo',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Text('${todo['titulo']}'),
+            const Text(
+              'Descripcion',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Text('${todo['descripcion']}'),
           ],
         ),
         actions: [
@@ -104,6 +137,36 @@ class ToDoState extends State<ToDo> {
             child: const Text('Eliminar'),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildTextField(TextEditingController controller, String hintText,
+      {bool multiline = false}) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 0.1,
+            blurRadius: 2,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: TextField(
+        controller: controller,
+        minLines: multiline ? 3 : null,
+        maxLines: multiline ? 6 : null,
+        keyboardType: multiline ? TextInputType.multiline : TextInputType.text,
+        decoration: InputDecoration(
+          hintText: hintText,
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
+          border: InputBorder.none,
+        ),
       ),
     );
   }
@@ -130,15 +193,11 @@ class ToDoState extends State<ToDo> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(hintText: 'Ingresar el título'),
-            ),
-            TextField(
-              controller: _descriptionController,
-              decoration:
-                  const InputDecoration(hintText: 'Ingresar la descripción'),
-            ),
+            const SizedBox(height: 10),
+            _buildTextField(_titleController, 'Digitar título'),
+            const SizedBox(height: 10),
+            _buildTextField(_descriptionController, 'Digitar descripción',
+                multiline: true),
           ],
         ),
         actions: [
@@ -227,21 +286,22 @@ class ToDoState extends State<ToDo> {
                               ),
                             ),
                             // onTap: () => _showTodoDetails(todo),
-                            onTap: todo['esCompleta'] ? null : () => _showTodoDetails(todo),
+                            onTap: todo['esCompleta']
+                                ? null
+                                : () => _showTodoDetails(todo),
                             trailing: !todo['esCompleta']
                                 ? Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       IconButton(
                                         icon: const Icon(Icons.edit),
-                                        onPressed: () =>
-                                            _showTodoEditDialog(todo),
+                                        onPressed: () => _showTodoEditDialog(todo),
+                                        tooltip: 'Editar',
                                       ),
                                       IconButton(
                                         icon: const Icon(Icons.delete),
-                                        onPressed: () {
-                                          _deleteTodo(todo);
-                                        },
+                                        onPressed: () => _deleteTodo(todo),
+                                        tooltip: 'Eliminar',
                                       ),
                                     ],
                                   )
